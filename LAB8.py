@@ -8,22 +8,6 @@
 ########################################
 def isPrime(n, i = 2):
     # i is a preloaded divisor
-    '''
-    >>> isPrime(5)
-    True
-    >>> isPrime(1)
-    False
-    >>> isPrime(9)
-    False
-    >>> isPrime(85)
-    False
-    >>> isPrime(1019)
-    True
-    >>> isPrime(2)
-    True
-    >>> isPrime(0)
-    False
-    '''
     # If n is 0 or 1, return false
     if n < 2:
         return False
