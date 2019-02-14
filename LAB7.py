@@ -12,7 +12,7 @@ def triangle(n):
 
 ###################
 def recursive_triangle(k, n):
-    # If the provided k is zero, return none
+    # If the provided k is zero, return an empty string
     if k == 0:
         return ''
     # Check if the current state is the last and don't make a recursive call

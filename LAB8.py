@@ -19,5 +19,5 @@ def isPrime(n, i = 2):
     # If i^2 is greater than n, it must be a prime number
     if n < i**2:
         return True
-    # Recursively increase i
+    # Recursively increase i until a condition is met
     return isPrime(n, i+1)
