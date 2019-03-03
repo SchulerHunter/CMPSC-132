@@ -87,6 +87,3 @@ class Vector:
     # Otherwise it returns the class type and a memory address
     def __repr__(self):
         return str(self.returnable)
-
-m = Vector([3,5,1])
-print(m)
