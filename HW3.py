@@ -19,8 +19,7 @@ def findNextOpr(txt):
 def isNumber(txt):
     if not isinstance(txt, str) or len(txt) == 0:
         return "error: isNumber"
-    # Remove all of the spaces in the string and then test to see if it can be converted to a number
-    txt = txt.strip()
+    # Test to see if it can be converted to a number
     try:
         if float(txt):
             return True
@@ -36,19 +35,25 @@ def getNextNumber(expr, pos):
     # Check to see if the string is simply a number with no operators
     if isNumber(expr):
         return (float(expr), None, None)
+    opPos = findNextOpr(expr)
+    if opPos < 0:
+        op = None
+        opPos = None
     else:
-        # If there are operators, find their position and what it is and return them
-        opPos = findNextOpr(expr)
-        if opPos < 0:
-            op = None
-            opPos = None
-        else:
-            op = expr[opPos]
-            expr = expr[:opPos]
-            opPos += pos
-        if isNumber(expr):
-            num = float(expr)
-        else:
-            num = None
-        return (num, op, opPos)
+        op = expr[opPos]
+        if op == '-' and not isNumber(expr[:opPos]):
+            secondOp = findNextOpr(expr[opPos+1:]) + opPos + 1
+            num = float(expr[opPos:secondOp])
+            op = expr[secondOp]
+            opPos = pos + secondOp
+            return (num, op, opPos)
+        expr = expr[:opPos]
+        opPos += pos
+    if len(expr) == 0:
+        return(None, op, opPos)
+    if isNumber(expr):
+        num = float(expr)
+    else:
+        num = None
+    return (num, op, opPos)
 
