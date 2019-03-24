@@ -1,13 +1,14 @@
-#Lab #12
-#Due Date: 03/22/2019, 11:59PM
+#LAB X
+#Due Date: 04/07/2019, 11:59PM
 ########################################
 #
 # Name: Hunter Schuler
 # Collaboration Statement: I neither sought nor gave assistance
 #
 ########################################
-class MaxHeapPriorityQueue:
 
+
+class MaxHeapPriorityQueue:
     def __init__(self):
         self.heap = []
         self.size = 0
@@ -16,32 +17,33 @@ class MaxHeapPriorityQueue:
         # Len should always just return the size
         return self.size
 
-    def parent(self,index):
+    def parent(self, index):
         # The parent is always the index - 1 with a floor divide
         if index == 1:
             return None
         return self.heap[(index - 1) // 2]
-        
+
     # The left child of a provided index is 2 * index
     # and the right is just + 1. Since this is 1:n, both
     # must be subtracted by 1
 
-    def leftChild(self,index):
+    def leftChild(self, index):
         try:
             return self.heap[(index * 2) - 1]
         except IndexError:
             return None
 
-    def rightChild(self,index):
+    def rightChild(self, index):
         try:
             return self.heap[index * 2]
         except IndexError:
             return None
-    
-    def swap(self, index1, index2):
-        self.heap[index1-1], self.heap[index2-1] = self.heap[index2-1], self.heap[index1-1]
 
-    def insert(self,x):
+    def swap(self, index1, index2):
+        self.heap[index1-1], self.heap[index2 -
+                                       1] = self.heap[index2-1], self.heap[index1-1]
+
+    def insert(self, x):
         # Adjust the size and add the item to the end of the heap list
         self.size += 1
         self.heap.append(x)
@@ -57,9 +59,9 @@ class MaxHeapPriorityQueue:
                 continue
             break
         self.heap[index] = x
-    
+
     def deleteMax(self):
-        if self.size<=0:
+        if self.size <= 0:
             return None
         else:
             # Store the max value
@@ -82,6 +84,17 @@ class MaxHeapPriorityQueue:
                     self.swap(index+1, childIndex+1)
                     index = childIndex
                     childIndex = index * 2 + 1
-                else: 
+                else:
                     break
             return max
+
+def heapSort(numList):
+    # Create a heap and add all values
+    sort_heap = MaxHeapPriorityQueue()
+    for i in range(len(numList)):
+        sort_heap.insert(numList[i])
+    result = []
+    # Loop through the heap removing each max value and adding it to the beginning of the list
+    while sort_heap.size > 0:
+        result.insert(0, sort_heap.deleteMax())
+    return result
