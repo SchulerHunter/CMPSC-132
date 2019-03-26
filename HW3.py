@@ -35,22 +35,28 @@ def getNextNumber(expr, pos):
     # Check to see if the string is simply a number with no operators
     if isNumber(expr):
         return (float(expr), None, None)
+    # Find the operator and if there is none, set both operator and position to None
     opPos = findNextOpr(expr)
     if opPos < 0:
         op = None
         opPos = None
     else:
+        # Define the operator if it exists
         op = expr[opPos]
+        # Check if there is a number before the -
+        # If there isn't then the first number is a negative
         if op == '-' and not isNumber(expr[:opPos]):
             secondOp = findNextOpr(expr[opPos+1:]) + opPos + 1
-            num = float(expr[opPos:secondOp])
+            num = float("".join(expr[opPos:secondOp].split()))
             op = expr[secondOp]
             opPos = pos + secondOp
             return (num, op, opPos)
         expr = expr[:opPos]
         opPos += pos
+    # If there is no number after the operator, just return the operator and its position
     if len(expr) == 0:
         return(None, op, opPos)
+    # Otherwise just push the number with the operators
     if isNumber(expr):
         num = float(expr)
     else:

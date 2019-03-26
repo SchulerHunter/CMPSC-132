@@ -98,6 +98,20 @@ def isNumber(txt):
 
 
 def getNextNumber(expr, pos):
+    '''
+    >>> getNextNumber('8  +    5    -2',4)
+    (5.0, '-', 13)
+    >>> getNextNumber(' 2.342 * 2.3245 - 5.12',8)
+    (2.3245, '-', 16)
+    >>> getNextNumber('     -  5 +6  ^ 5.6 * 7.5 + 3      ',11)
+    (6.0, '^', 14)
+    >>> getNextNumber('4.5 + 3.15         /  -5',20)
+    (-5.0, None, None)
+    >>> getNextNumber('     2.56         +  8    -9 +   7   9     ',22)
+    (-9.0, '+', 29)
+    >>> getNextNumber('     15 +30 /8^',14)
+    (None, '^', 14)
+    '''
     if not isinstance(expr, str) or not isinstance(pos, int) or len(expr) == 0 or pos < 0 or pos >= len(expr):
         return None, None, "error: getNextNumber"
     expr = expr[pos:]
@@ -112,8 +126,9 @@ def getNextNumber(expr, pos):
     else:
         # Define the operator if it exists
         op = expr[opPos]
-        # Convert all subtraction operators to just a negative number
-        if op == '-' and isNumber(expr[:findNextOpr(expr[opPos:])]):
+        # Check if there is a number before the -
+        # If there isn't then the first number is a negative
+        if op == '-' and not isNumber(expr[:opPos]):
             secondOp = findNextOpr(expr[opPos+1:]) + opPos + 1
             num = float("".join(expr[opPos:secondOp].split()))
             op = expr[secondOp]
@@ -132,6 +147,28 @@ def getNextNumber(expr, pos):
     return (num, op, opPos)
 
 def postfix(expr):
+    '''
+    >>> postfix('2^4')
+    '2.0 4.0 ^'
+    >>> postfix('2')
+    '2.0'
+    >>> postfix('2 *     5 +    3    ^ 2+1   + 4')
+    '2.0 5.0 * 3.0 2.0 ^ + 1.0 + 4.0 +'
+    >>> postfix('-2 *    5 + 3     ^ 2 +1    + 4')
+    '-2.0 5.0 * 3.0 2.0 ^ + 1.0 + 4.0 +'
+    >>> postfix('     2 *    5   + 3 ^      -2+ 1     + 4')
+    '2.0 5.0 * 3.0 -2.0 ^ + 1.0 + 4.0 +'
+    >>> postfix('-2      * 5 +   4      ^ - 2  + 1 +   4')
+    '-2.0 5.0 * 4.0 -2.0 ^ + 1.0 + 4.0 +'
+    >>> postfix('2 *   + 5 +    3 ^    -2 +      1 +     4')
+    'Error, invalid expression'
+    >>> postfix('2        5')
+    'Error, invalid expression'
+    >>> postfix('25 +')
+    'Error, invalid expression'
+    >>> postfix('2 * 3 + 5 * 4^2 - 3^6 + 1')
+    '2.0 3.0 * 5.0 4.0 2.0 ^ * + 3.0 6.0 ^ - 1.0 +'
+    '''
     # Initialize variable
     postStack = Stack()
     postExpr = []
@@ -189,3 +226,7 @@ def postfix(expr):
             break
     postStr = ' '.join(map(str, postExpr))
     return postStr
+
+
+postfix('-2      * 5 +   4      ^ - 2  + 1 +   4')
+postfix('-2 *    5 + 3     ^ 2 +1    + 4')
