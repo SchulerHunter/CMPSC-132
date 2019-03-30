@@ -45,7 +45,7 @@ def getNextNumber(expr, pos):
         op = expr[opPos]
         # Check if there is a number before the -
         # If there isn't then the first number is a negative
-        if op == '-' and not isNumber(expr[:opPos]):
+        if op == '-' and (opPos == 0 or not isNumber(expr[:opPos])):
             secondOp = findNextOpr(expr[opPos+1:]) + opPos + 1
             num = float("".join(expr[opPos:secondOp].split()))
             op = expr[secondOp]
