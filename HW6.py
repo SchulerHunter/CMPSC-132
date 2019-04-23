@@ -140,7 +140,7 @@ class Graph:
         checked = {}
         result = []
         for key in self.vertList:
-            checked[key[0]] = False
+            checked[key] = False
         # Create a queue for the BFS
         BFSQueue = Queue()
         # Mark the start as checked and enqueue
@@ -176,7 +176,7 @@ class Graph:
         checked = {}
         result = []
         for key in self.vertList:
-            checked[key[0]] = False
+            checked[key] = False
         # Create the DFS Stack and push the start
         DFSStack = Stack()
         DFSStack.push(start)
@@ -214,8 +214,8 @@ class Graph:
         distances = {}
         visitedNodes = {}
         for key in self.vertList:
-            distances[key[0]] = float("inf")
-            visitedNodes[key[0]] = False
+            distances[key] = float("inf")
+            visitedNodes[key] = False
 
         distances[start] = 0
         nodeStack.push(start)
